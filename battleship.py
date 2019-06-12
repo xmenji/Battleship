@@ -57,9 +57,9 @@ destroyer = ship("Destroyer", random_row(board), random_col(board))
 cruiser = ship("Cruiser", random_row(board), random_col(board))
 
 #DEBUG
-battleship.ship_position()
-destroyer.ship_position()
-cruiser.ship_position()
+#battleship.ship_position()
+#destroyer.ship_position()
+#cruiser.ship_position()
 
 #Begin the game
 
