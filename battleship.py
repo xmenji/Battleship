@@ -1,14 +1,44 @@
 from random import randint
 
-board = []
+#ship class
+class ship(object):
+	#ship's position
+	row = 0
+	col = 0
+	ship_name = ""
+	
+	
+	#initialize ship object with 
+	#row and col args
+	def __init__(self, ship_name, row, column):
+		self.row = row
+		self.col = column
+		self.ship_name = ship_name
+	
+
+	def get_row(self):
+		return self.row
+	
+	def get_col(self):
+		return self.col
+
+	def get_ship_name(self):
+		return self.ship_name
+
+	def ship_position(self):
+		print("[" + str(self.row) + "," + str(self.col) + "]")
+		
+
+board = [] #gameboard
 
 #create 5x5 grid
 for x in range(5):
   board.append(["O"] * 5)
 
-#join() used to remove quotations
+#method to print out game board
 def print_board(board):
   for row in board:
+		#join() used to remove quotations
     print(" ".join(row))
 
 print_board(board)
@@ -20,45 +50,52 @@ def random_row(board):
 def random_col(board):
   return randint(0, len(board[0]) - 1)
 
-#store ship values
-ship_row = random_row(board)
-ship_col = random_col(board)
-#DEBUG 
-#print ship_row
-#print ship_col
+#create enemy ships
+battleship = ship("Battleship", random_row(board), random_col(board))
+destroyer = ship("Destroyer", random_row(board), random_col(board))
+cruiser = ship("Cruiser", random_row(board), random_col(board))
 
-# Everything from here on should go in your for loop!
-# Be sure to indent four spaces!
-#Run the game 4 times
-for turn in range(4):
-  print("Turn " + str(turn + 1))
-  
-  #get player guess
-  guess_row = int(input("Guess Row: "))
-  guess_col = int(input("Guess Col: "))
+print(type(battleship.get_ship_name()))
+battleship.ship_position()
+destroyer.ship_position()
+cruiser.ship_position()
 
-  #check player guess
-  if guess_row == ship_row and guess_col == ship_col:
-    print("Congratulations! You sunk my battleship!")
-    break
-  else: #player guessed incorrectly
-    if (guess_row < 0 or guess_row > 4) or (guess_col < 0 or guess_col > 4):
-      print("Oops, that's not even in the ocean.")
-    elif(board[guess_row][guess_col] == "X"):
-      print("You guessed that one already.")
-    else:
-      print("You missed my battleship!")
-      board[guess_row][guess_col] = "X"
-    if turn == 3:
-      print("Game Over")
-    # Print (turn + 1) here!
-    print(str(turn + 1))
-    print_board(board)
-    
-"""
-Future Updates:
-    Make multiple battleships: you’ll need to be careful because you need to make sure that you don’t place battleships on top of each other on the game board. You’ll also want to make sure that you balance the size of the board with the number of ships so the game is still challenging and fun to play.
-    Make battleships of different sizes: this is trickier than it sounds. All the parts of the battleship need to be vertically or horizontally touching and you’ll need to make sure you don’t accidentally place part of a ship off the side of the board.
-    Make your game a two-player game.
-    Use functions to allow your game to have more features like rematches, statistics and more!
-"""
+#Begin the game
+turn = 1
+
+while turn <= 4:
+	print("Turn " + str(turn))
+
+	#get player guess
+	guess_row = int(input("Guess Row: "))
+	guess_col = int(input("Guess Column: "))
+
+	#check player guess
+	#battleship
+	if guess_row == battleship.get_row() and guess_col == battleship.get_col():
+		print("Congratulations! You sunk my %s." % battleship.get_ship_name())
+		board[guess_row][guess_col] = "S"
+	#destroyer
+	elif guess_row == destroyer.get_row() and guess_col == destroyer.get_col():
+		print("Congratulations! You sunk my %s." % destroyer.get_ship_name())
+		board[guess_row][guess_col] = "S"
+	#cruiser
+	elif guess_row == cruiser.get_row() and guess_col == cruiser.get_col():
+		print("Congratulations! You sunk my %s." % cruiser.get_ship_name())
+		board[guess_row][guess_col] = "S"
+	else:
+		 #player guessed incorrectly
+		 if (guess_row < 0 or guess_row > 4) or (guess_col < 0 or guess_col > 4):
+			 print("Oops, that's not even in the ocean.")
+		 elif (board[guess_row][guess_col] == "X"):
+			 print("You guessed that one already.")
+		 else:
+			 print("You missed my battleship!")
+			 board[guess_row][guess_col] = "X"
+
+		 if turn == 4:
+			 print("Game Over!")
+
+	#show player the board and update turn by 1
+	print_board(board)
+	turn += 1		
