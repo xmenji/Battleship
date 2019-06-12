@@ -37,6 +37,7 @@ for x in range(5):
 
 #method to print out game board
 def print_board(board):
+	
   for row in board:
 		#join() used to remove quotations
     print(" ".join(row))
@@ -55,16 +56,20 @@ battleship = ship("Battleship", random_row(board), random_col(board))
 destroyer = ship("Destroyer", random_row(board), random_col(board))
 cruiser = ship("Cruiser", random_row(board), random_col(board))
 
-print(type(battleship.get_ship_name()))
+#DEBUG
 battleship.ship_position()
 destroyer.ship_position()
 cruiser.ship_position()
 
 #Begin the game
-turn = 1
 
-while turn <= 4:
-	print("Turn " + str(turn))
+#variables
+turn = 1 #keeps track of the number of turns
+ships_destroyed = 0  #keeps track of how many ships are destroyed by the player
+
+#game start
+while turn <= 4 and ships_destroyed != 3:
+	print("\nTurn " + str(turn))
 
 	#get player guess
 	guess_row = int(input("Guess Row: "))
@@ -74,14 +79,17 @@ while turn <= 4:
 	#battleship
 	if guess_row == battleship.get_row() and guess_col == battleship.get_col():
 		print("Congratulations! You sunk my %s." % battleship.get_ship_name())
+		ships_destroyed += 1
 		board[guess_row][guess_col] = "S"
 	#destroyer
 	elif guess_row == destroyer.get_row() and guess_col == destroyer.get_col():
 		print("Congratulations! You sunk my %s." % destroyer.get_ship_name())
+		ships_destroyed += 1
 		board[guess_row][guess_col] = "S"
 	#cruiser
 	elif guess_row == cruiser.get_row() and guess_col == cruiser.get_col():
 		print("Congratulations! You sunk my %s." % cruiser.get_ship_name())
+		ships_destroyed += 1
 		board[guess_row][guess_col] = "S"
 	else:
 		 #player guessed incorrectly
@@ -90,12 +98,14 @@ while turn <= 4:
 		 elif (board[guess_row][guess_col] == "X"):
 			 print("You guessed that one already.")
 		 else:
-			 print("You missed my battleship!")
+			 print("You missed!")
 			 board[guess_row][guess_col] = "X"
-
-		 if turn == 4:
-			 print("Game Over!")
 
 	#show player the board and update turn by 1
 	print_board(board)
 	turn += 1		
+
+if ships_destroyed == 3:
+	print("\nCongratulations! You've destroyed the whole fleet.")
+else:
+	print("\nGame Over!")
